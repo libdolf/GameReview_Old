@@ -1,4 +1,4 @@
-package br.com.libdolf.gamereview.domain.reviews;
+package br.com.libdolf.gamereview.data.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Review {
+public class Schema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

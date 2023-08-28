@@ -57,4 +57,8 @@ public class Game {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
+
+    GameSchema toentity(){
+        return GameSchema()
+    }
 }

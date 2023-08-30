@@ -1,5 +1,6 @@
 package br.com.libdolf.gamereview.data.controllers.review;
 
+import br.com.libdolf.gamereview.core.exceptions.NotFoundException;
 import br.com.libdolf.gamereview.core.utils.JsonCreator;
 import br.com.libdolf.gamereview.domain.entities.Review;
 import br.com.libdolf.gamereview.usecases.review.GetReviewUseCase;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +40,9 @@ class GetReviewControllerTest {
     public MockHttpServletRequestBuilder requestBuild() {
         return get("/v1/review");
     }
+    public MockHttpServletRequestBuilder requestBuild(int id) {
+        return get("/v1/review/"+id);
+    }
     @Test
     @DisplayName("Test if response is a Json")
     void whenRequestIsSuccessful_ThenReturnMediaTypeJson() throws Exception{
@@ -53,7 +58,7 @@ class GetReviewControllerTest {
     }
 
     @Test
-    @DisplayName("Test response when sucessful")
+    @DisplayName("Test response when successful")
     void whenGetFindAllIsSuccessful_ThenReturnArrayListAndStatusCodeOk() throws Exception {
         Review review = ReviewCreator.validReview();
 
@@ -70,4 +75,34 @@ class GetReviewControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(JsonCreator.toJson(List.of(response))));
     }
+
+    @Test
+    @DisplayName("Test response when id is invalid")
+    void whenGetFindByIdFailed_thenReturnStatusCodeNotFound() throws Exception{
+        Mockito.when(useCase.findById(any())).thenThrow(new NotFoundException("Review Not Found"));
+
+        mockMvc.perform(requestBuild(1))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Test response when findById successful")
+    void whenGetFindByIdIsSuccessful_ThenReturnAObjectAndStatusCodeOk() throws Exception {
+        Review review = ReviewCreator.validReview();
+        review.setId(1L);
+
+        GetReviewController.Response response = new GetReviewController.Response(
+                review.getId(),
+                review.getGame().getName(),
+                review.getTitle(),
+                review.getReview(),
+                review.getRating(),
+                review.getPublicationDate());
+
+        Mockito.when(useCase.findById(review.getId())).thenReturn(review);
+        mockMvc.perform(requestBuild(1))
+                .andExpect(status().isOk())
+                .andExpect(content().json(JsonCreator.toJson(response)));
+    }
+
 }

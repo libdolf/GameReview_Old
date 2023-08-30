@@ -1,5 +1,6 @@
 package br.com.libdolf.gamereview.data.gateway;
 
+import br.com.libdolf.gamereview.core.exceptions.NotFoundException;
 import br.com.libdolf.gamereview.data.datasources.ReviewJpaRepository;
 import br.com.libdolf.gamereview.data.models.ReviewSchema;
 import br.com.libdolf.gamereview.domain.entities.Review;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -29,5 +31,11 @@ public class ReviewRepositoryImpl implements ReviewRepository {
             reviews.add(schema.toEntity());
         }
         return reviews;
+    }
+
+    @Override
+    public Review findById(Long id){
+        ReviewSchema schema = reviewJpaRepository.findById(id).orElseThrow(() -> new NotFoundException("Review not Found"));
+        return schema.toEntity();
     }
 }

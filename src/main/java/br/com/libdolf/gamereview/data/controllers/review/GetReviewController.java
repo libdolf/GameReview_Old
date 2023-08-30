@@ -1,11 +1,13 @@
 package br.com.libdolf.gamereview.data.controllers.review;
 
+import br.com.libdolf.gamereview.core.exceptions.NotFoundException;
 import br.com.libdolf.gamereview.domain.entities.Review;
 import br.com.libdolf.gamereview.usecases.review.GetReviewUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,16 @@ public class GetReviewController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getById(@PathVariable Long id) throws Exception{
+        Review review = useCase.findById(id);
+        return ResponseEntity.ok(new Response(review.getId(),
+        review.getGame().getName(),
+                review.getTitle(),
+                review.getReview(),
+                review.getRating(),
+                review.getPublicationDate()));
     }
 
     public record Response(

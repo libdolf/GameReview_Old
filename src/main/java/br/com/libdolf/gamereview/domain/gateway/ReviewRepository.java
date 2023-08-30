@@ -4,6 +4,6 @@ import br.com.libdolf.gamereview.domain.entities.Review;
 
 public interface ReviewRepository {
 
-    void save(Review review);
+    Review save(Review review);
 
 }

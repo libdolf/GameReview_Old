@@ -1,64 +1,30 @@
 package br.com.libdolf.gamereview.domain.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Game {
     private Long id;
     private String name;
-    private String platform;
-    private Set<Genre> genre = new HashSet<>();
+    private List<Integer> platforms ;
+    private List<Integer> genres;
     private Integer rating;
 
-    public Game(Long id, String name, String platform, Set<Genre> genre, Integer rating) {
-        this.id = id;
-        this.name = name;
-        this.platform = platform;
-        this.genre = genre;
-        this.rating = rating;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public Set<Genre> getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Set<Genre> genre) {
-        this.genre = genre;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    GameSchema toentity(){
-        return GameSchema()
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", platforms=" + platforms +
+                ", genres=" + genres +
+                ", rating=" + rating +
+                '}';
     }
 }

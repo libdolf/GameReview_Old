@@ -1,6 +1,7 @@
 package br.com.libdolf.gamereview.data.models;
 
 import br.com.libdolf.gamereview.domain.entities.Game;
+import br.com.libdolf.gamereview.domain.entities.Review;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +15,7 @@ public class ReviewSchema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private GameSchema game;
+    private Long gameId;
 
     private String title;
 
@@ -25,8 +25,8 @@ public class ReviewSchema {
 
     private LocalDateTime publicationDate;
 
-    public ReviewSchema(Game game, String title, String review, Integer rating, LocalDateTime publicationDate) {
-        this.game = game.toEntity();
+    public ReviewSchema(Long gameId, String title, String review, Integer rating, LocalDateTime publicationDate) {
+        this.gameId = gameId;
         this.title = title;
         this.review = review;
         this.rating = rating;
@@ -34,5 +34,15 @@ public class ReviewSchema {
     }
 
     public ReviewSchema() {
+    }
+
+    public Review toEntity() {
+        return  Review.builder()
+                .id(getId())
+                .title(getTitle())
+                .review(getReview())
+                .rating(getRating())
+                .publicationDate(getPublicationDate())
+                .build();
     }
 }

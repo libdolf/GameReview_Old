@@ -29,4 +29,10 @@ public class Review {
                 this.rating,
                 this.publicationDate);
     }
+
+    public boolean isEmpty(){
+        if(this.id == null && this.title == null && this.review == null && this.rating == null && this.publicationDate == null){
+            return true;
+        } else return false;
+    }
 }

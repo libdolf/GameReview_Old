@@ -28,10 +28,9 @@ public class CreateReviewController {
     @PostMapping
     public ResponseEntity create(@RequestBody @Valid Request request){
         Review review = useCase.save(new Input(request.gameId(),request.title(), request.review(), request.rating()));
-        if(review == null){
+        if(review.isEmpty()){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(HttpStatus.CREATED);
+        }else return new ResponseEntity(HttpStatus.CREATED);
     }
 
     private record Request(

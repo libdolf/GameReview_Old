@@ -1,6 +1,7 @@
 package br.com.libdolf.gamereview.data.controllers.review;
 
 import br.com.libdolf.gamereview.core.utils.JsonCreator;
+import br.com.libdolf.gamereview.domain.entities.Review;
 import br.com.libdolf.gamereview.usecases.review.CreateReviewUseCase;
 import br.com.libdolf.gamereview.utils.ReviewCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,6 +65,17 @@ class CreateReviewControllerTest {
         mockMvc.perform(requestBuild().contentType(MediaType.APPLICATION_JSON)
                 .content(JsonCreator.toJson(input)))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("Test response when Service not save the Review")
+    void whenServiceNotSaveTheReview_ThenReturnStatusBadRequest() throws Exception {
+        Mockito.when(useCase.save(any(CreateReviewUseCase.Input.class))).thenReturn(new Review());
+        CreateReviewUseCase.Input input = new CreateReviewUseCase.Input(1, null, null, null);
+
+        mockMvc.perform(requestBuild().contentType(MediaType.APPLICATION_JSON)
+                        .content(JsonCreator.toJson(input)))
+                .andExpect(status().isBadRequest());
     }
 
 

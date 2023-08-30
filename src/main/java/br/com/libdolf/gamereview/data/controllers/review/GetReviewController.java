@@ -31,11 +31,17 @@ public class GetReviewController {
                     review.getRating(),
                     review.getPublicationDate()));
         }
-        if (response == null){
+        if (response.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(response);
     }
 
-    private record Response(Long id, String gameName, String title, String review, Integer rating, LocalDateTime publicationDate){};
+    public record Response(
+            Long id,
+            String gameName,
+            String title,
+            String review,
+            Integer rating,
+            LocalDateTime publicationDate){ };
 }

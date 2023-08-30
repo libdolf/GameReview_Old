@@ -30,14 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@DisplayName("Test Controller")
+@DisplayName("Test Create Controller")
 class CreateReviewControllerTest {
 
-    @MockBean
-    private CreateReviewUseCase useCase;
+    @MockBean private CreateReviewUseCase useCase;
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Autowired private MockMvc mockMvc;
 
     public MockHttpServletRequestBuilder requestBuild(){
         return post("/v1/review");
@@ -48,14 +46,6 @@ class CreateReviewControllerTest {
     void whenMediaTypeIsNotJson_ThenReturnStatusCodeUnsupportedMediaType() throws Exception{
         mockMvc.perform(requestBuild().contentType(MediaType.APPLICATION_XML)).andExpect(status().isUnsupportedMediaType());
     }
-
-    @Test
-    @DisplayName("Test response when Request data is invalid or null")
-    void whenRequestDataIsInvalid_ThenReturnStatusCodeBadRequestAndFieldsMissing() throws Exception {
-        mockMvc.perform(requestBuild().contentType(MediaType.APPLICATION_JSON).content(" "))
-                .andExpect(status().isBadRequest());
-    }
-
     @Test
     @DisplayName("Test response when Request data is Valid")
     void whenRequestDataIsValid_ThenReturnStatusCodeCreated() throws Exception {

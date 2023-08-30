@@ -33,7 +33,7 @@ public class CreateReviewController {
         }else return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    private record Request(
+    public record Request(
             @NotNull Integer gameId,
             String title,
             String review,
